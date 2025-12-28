@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const { Schema, Types } = mongoose;
-mongoose.connect('mongodb+srv://jatin:jatin123@coursesell.xphgzwo.mongodb.net/admin-courses')
 console.log("connected");
 
 const userSchema = new Schema({
