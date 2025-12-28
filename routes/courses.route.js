@@ -3,15 +3,17 @@ const courseRouter = Router();
 
 
 
-courseRouter.post("/purchases", () => {
+courseRouter.post("/purchases", (req,res) => {
     res.json({
         message: "user purchases"
     })
 })
 
-courseRouter.post("/preview", () => {
+courseRouter.get("/preview", (req,res) => {
     res.json({
-        message: "courses"
+        message: "courses",
+        number: 5,
+        age: 34,
     })
 })
 
