@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+
 const { Schema, Types } = mongoose;
+mongoose.connect('mongodb+srv://jatin:jatin123@coursesell.xphgzwo.mongodb.net/admin-courses')
+console.log("connected");
 
 const userSchema = new Schema({
     email: { type: String, unique: true },
@@ -33,10 +36,9 @@ const adminModel = mongoose.model('Admin', adminSchema);
 const courseModel = mongoose.model('Course', courseSchema);
 const purchaseModel = mongoose.model('Purchase', purchaseSchema);
 
-module.exports ={
- userModel,
- adminModel,
- courseModel,
-    
-purchaseModel,
+module.exports = {
+    userModel,
+    adminModel,
+    courseModel,
+    purchaseModel,
 };
