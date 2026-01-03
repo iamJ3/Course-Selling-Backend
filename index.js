@@ -21,4 +21,4 @@ async function main(params) {
     });
 }
 
-main()
+main();
