@@ -1,5 +1,9 @@
 const { Router } = require("express");
 const { userModel } = require("../db/db.js");
+const jwt = require("jsonwebtoken");
+const JWT_USER_PASSWORD = 'jatin123'
+
+
 const useRouter = Router()
 
 useRouter.post("/signup", async (req, res) => {
@@ -20,7 +24,28 @@ useRouter.post("/signup", async (req, res) => {
     })
 })
 
-useRouter.get("/signin", (req, res) => {
+useRouter.post("/signin", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await userModel.findOne({
+            email, password
+        });
+
+        if (user) {
+            const token = jwt.sign({
+                id: user._id
+            }, JWT_USER_PASSWORD);
+            res.json({
+                token: token
+            });
+        } else {
+            res.status(403).json({
+                message: "Incorrect Credentioasl"
+            })
+        }
+    } catch (error) {
+        console.error(error);
+    }
     res.json({
         message: "signin endpoint"
     })
@@ -34,7 +59,8 @@ useRouter.post("/purchases", (req, res) => {
     res.json({
         message: "user purchases"
     })
-})
+});
+
 module.exports = {
     useRouter: useRouter
 }

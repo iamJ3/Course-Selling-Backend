@@ -24,5 +24,4 @@ async function main() {
     });
 };
 
-
 main();
