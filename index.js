@@ -22,6 +22,7 @@ async function main() {
     app.listen(port, () => {
         console.log(`listning on port 3000`);
     });
-}
+};
+
 
 main();
