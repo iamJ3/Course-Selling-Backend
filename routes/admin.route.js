@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const adminRouter = Router();
-const {adminModel} = require('../db/db.js')
-const {JWT_ADMIN_PASSWORD} = require("../config/config.js") 
-const jwt = require('jsonwebtoken')
+const { adminModel } = require('../db/db.js')
+const { JWT_ADMIN_PASSWORD } = require("../config/config.js")
+const jwt = require('jsonwebtoken');
+const adminMiddleware = require('../middlewares/admin.middleware.js');
 
-adminRouter.get("/signup", async(req, res) => {
-     const { email, firstname, lastname, password } = req.body;
+adminRouter.get("/signup", async (req, res) => {
+    const { email, firstname, lastname, password } = req.body;
     try {
 
         const userData = await adminModel.create({
@@ -21,33 +22,39 @@ adminRouter.get("/signup", async(req, res) => {
     })
 })
 
-adminRouter.get("/signin", async(req, res) => {
-   try {
-          const { email, password } = req.body;
-          const admin = await adminModel.findOne({
-              email, password
-          });
-  
-          if (admin) {
-              const token = jwt.sign({
-                  id: admin._id
-              }, JWT_ADMIN_PASSWORD);
-              res.json({
-                  token: token
-              });
-          } else {
-              res.status(403).json({
-                  message: "Incorrect Credentioasl"
-              })
-          }
-      } catch (error) {
-          console.error(error);
-      }
-      res.json({
-          message: "signin endpoint"
-      })
+adminRouter.get("/signin", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const admin = await adminModel.findOne({
+            email, password
+        });
+
+        if (admin) {
+            const token = jwt.sign({
+                id: admin._id
+            }, JWT_ADMIN_PASSWORD);
+            res.json({
+                token: token
+            });
+        } else {
+            res.status(403).json({
+                message: "Incorrect Credentioasl"
+            })
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    res.json({
+        message: "signin endpoint"
+    })
 })
-adminRouter.get("/course", (req, res) => {
+adminRouter.get("/course", adminMiddleware, async(req, res) => {
+    const { title, description, imageUrl, price } = req.body;
+
+
+    await courseModel.create({
+        title, description, imageUrl, price, creatorId:adminId
+    })
     res.json({
         message: "courese endpoint"
     })
